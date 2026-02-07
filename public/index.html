@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arachne Panel - Send Run</title>
+    <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+    <h1>Send Run to Kafka</h1>
+    <form id="runForm">
+        <label for="id">ID:</label>
+        <input type="text" id="id" required><br><br>
+
+        <label for="start_url">Start URL:</label>
+        <input type="url" id="start_url" required><br><br>
+
+        <label for="max_depth">Max Depth:</label>
+        <input type="number" id="max_depth" min="0" required><br><br>
+
+        <label for="max_links">Max Links:</label>
+        <input type="number" id="max_links" min="0" required><br><br>
+
+        <label for="use_cache_flag">Use Cache:</label>
+        <input type="checkbox" id="use_cache_flag"><br><br>
+
+        <fieldset>
+            <legend>Extra Flags:</legend>
+            <label for="should_screenshot">Should Screenshot:</label>
+            <input type="checkbox" id="should_screenshot"><br>
+
+            <label for="parse_rendered_html">Parse Rendered HTML:</label>
+            <input type="checkbox" id="parse_rendered_html"><br>
+        </fieldset><br>
+
+        <button type="submit">Send Run</button>
+    </form>
+    <script src="assets/script.js"></script>
+</body>
+</html>

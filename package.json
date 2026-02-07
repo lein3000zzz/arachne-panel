@@ -1,0 +1,19 @@
+{
+  "name": "arachne-panel",
+  "module": "src/index.ts",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "start": "bun run --env-file=.env src/index.ts"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "@logtape/logtape": "^2.0.2",
+    "kafkajs": "^2.2.4"
+  }
+}
