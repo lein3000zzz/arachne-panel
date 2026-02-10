@@ -10,7 +10,7 @@ const server = Bun.serve({
             return new Response("OK", { status: 200 });
         },
 
-        "/api/runs/send": async (req: Request) => sendRun(req),
+        // "/api/runs/send": async (req: Request) => sendRun(req),
 
         "/api/*": Response.json({ message: "Not found" }, { status: 404 }),
     }

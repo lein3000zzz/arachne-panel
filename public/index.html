@@ -7,34 +7,76 @@
     <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
-    <h1>Send Run to Kafka</h1>
-    <form id="runForm">
-        <label for="id">ID:</label>
-        <input type="text" id="id" required><br><br>
+    <div class="app" id="appRoot">
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <img src="assets/images/logoTransparent.png" alt="Arachne logo" class="logo">
+                <button type="button" class="theme-toggle" id="themeToggle" aria-pressed="false">
+                    <span class="theme-toggle-label">Theme</span>
+                    <span class="theme-toggle-state" id="themeToggleState">Light</span>
+                </button>
+            </div>
+            <nav class="nav">
+                <span class="nav-title">Pages</span>
+                <a href="#" class="active" aria-current="page">Send Run</a>
+            </nav>
+        </aside>
+        <main class="content">
+            <div class="content-inner">
+                <div class="content-topbar">
+                    <button type="button" class="sidebar-toggle" id="sidebarToggle" aria-controls="sidebar" aria-expanded="true">
+                        Menu
+                    </button>
+                </div>
+                <header class="page-header">
+                    <h1>Send Run to Kafka</h1>
+                    <p class="subtitle">Configure crawl limits and flags, then send the run to Kafka.</p>
+                </header>
+                <form id="runForm" class="card">
+                    <div class="form-row">
+                        <label for="id">ID:</label>
+                        <input type="text" id="id" required>
+                    </div>
 
-        <label for="start_url">Start URL:</label>
-        <input type="url" id="start_url" required><br><br>
+                    <div class="form-row">
+                        <label for="start_url">Start URL:</label>
+                        <input type="url" id="start_url" required>
+                    </div>
 
-        <label for="max_depth">Max Depth:</label>
-        <input type="number" id="max_depth" min="0" required><br><br>
+                    <div class="form-row">
+                        <label for="max_depth">Max Depth:</label>
+                        <input type="number" id="max_depth" min="0" required>
+                    </div>
 
-        <label for="max_links">Max Links:</label>
-        <input type="number" id="max_links" min="0" required><br><br>
+                    <div class="form-row">
+                        <label for="max_links">Max Links:</label>
+                        <input type="number" id="max_links" min="0" required>
+                    </div>
 
-        <label for="use_cache_flag">Use Cache:</label>
-        <input type="checkbox" id="use_cache_flag"><br><br>
+                    <div class="form-row">
+                        <div class="checkbox-row">
+                            <input type="checkbox" id="use_cache_flag">
+                            <label for="use_cache_flag">Use Cache</label>
+                        </div>
+                    </div>
 
-        <fieldset>
-            <legend>Extra Flags:</legend>
-            <label for="should_screenshot">Should Screenshot:</label>
-            <input type="checkbox" id="should_screenshot"><br>
+                    <fieldset class="form-row">
+                        <legend>Extra Flags:</legend>
+                        <div class="checkbox-row">
+                            <input type="checkbox" id="should_screenshot">
+                            <label for="should_screenshot">Should Screenshot</label>
+                        </div>
+                        <div class="checkbox-row">
+                            <input type="checkbox" id="parse_rendered_html">
+                            <label for="parse_rendered_html">Parse Rendered HTML</label>
+                        </div>
+                    </fieldset>
 
-            <label for="parse_rendered_html">Parse Rendered HTML:</label>
-            <input type="checkbox" id="parse_rendered_html"><br>
-        </fieldset><br>
-
-        <button type="submit">Send Run</button>
-    </form>
+                    <button type="submit">Send Run</button>
+                </form>
+            </div>
+        </main>
+    </div>
     <script src="assets/script.js"></script>
 </body>
 </html>
