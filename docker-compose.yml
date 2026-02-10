@@ -10,3 +10,32 @@ services:
     ports:
       - "3003:3003"
     restart: always
+
+  db:
+    container_name: postgres
+    image: postgres:16
+    env_file:
+      - ./deployments/postgres/pg.env
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./deployments/opt/postgresql/data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB" ]
+      interval: 30s
+      timeout: 5s
+      retries: 10
+    restart: always
+
+  migrate:
+    image: postgres:16
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file:
+      - ./deployments/postgres/pg.env
+    volumes:
+      - ./deployments/postgres/migration.sql:/migration.sql:ro
+    entrypoint: [ "sh","-c","PGPASSWORD=$$POSTGRES_PASSWORD psql -h db -U $$POSTGRES_USER -d $$POSTGRES_DB -f /migration.sql" ]
+    restart: "no"
+

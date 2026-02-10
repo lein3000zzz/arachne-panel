@@ -1,9 +1,9 @@
-export interface ExtraTaskFlags {
+export type ExtraTaskFlags = {
     should_screenshot: boolean;
     parse_rendered_html: boolean;
 }
 
-export interface Run {
+export type Run = {
     id: string;
     start_url: string;
     max_depth: number;
