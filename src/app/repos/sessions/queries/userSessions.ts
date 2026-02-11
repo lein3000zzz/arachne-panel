@@ -29,8 +29,11 @@ export async function createSession(user: User): Promise<string> {
     }
 }
 
-export async function getUserIdFromSession(sessionId: string): Promise<string | null> {
-    return await redis.get(`${SESSION_PREFIX}${sessionId}`);
+export async function getSessionUser(sessionId: string): Promise<User | null> {
+    const sessData = await redis.get(`${SESSION_PREFIX}${sessionId}`);
+    if (!sessData) return null;
+
+    return JSON.parse(sessData) as User;
 }
 
 export async function deleteSession(sessionId: string): Promise<void> {

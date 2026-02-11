@@ -1,6 +1,6 @@
-import { type Run } from "../../../app/types";
-import { logger } from "../../../lib";
-import { kp } from "../../../app/producer";
+import { type Run } from "@/app/types";
+import { logger } from "@lib";
+import { kp } from "@/app/producer";
 
 async function sendRun(req: Request): Promise<Response> {
     try {

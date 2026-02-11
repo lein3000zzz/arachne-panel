@@ -1,6 +1,7 @@
 import { crawlerPg } from "../db";
 import { logger, ensureExists } from "@lib";
 import {type User, type UserWithExtra} from "@/app/types";
+import {AlreadyExistsError, UnexpectedError} from "@lib";
 
 interface CreateUserParams {
     username: string;
@@ -8,21 +9,34 @@ interface CreateUserParams {
     hasAccess?: boolean;
 }
 
-async function register({ username, passwordRaw, hasAccess = false }: CreateUserParams): Promise<User> {
+export async function register({ username, passwordRaw, hasAccess = false }: CreateUserParams): Promise<User> {
     const id = Bun.randomUUIDv7();
     const password_hash = await Bun.password.hash(passwordRaw);
 
-    const [user] = await crawlerPg<User[]>`
-        INSERT INTO users ${crawlerPg({ id, username, password_hash, has_access: hasAccess })}
-        RETURNING id, username, has_access AS "hasAccess", created_at AS "createdAt", updated_at AS "updatedAt"
-    `;
+    try {
+        const [user] = await crawlerPg<User[]>`
+            INSERT INTO users ${crawlerPg({
+                id,
+                username,
+                password_hash,
+                has_access: hasAccess
+            })} RETURNING id, username, has_access AS "hasAccess", created_at AS "createdAt", updated_at AS "updatedAt"
+        `;
 
-    logger.info(`User ${username} created successfully.`);
+        logger.info(`User ${username} created successfully.`);
 
-    return ensureExists(user, `Failed to create user ${username}.`);
+        return ensureExists(user, `Failed to create user ${username}.`);
+    } catch (error: any) {
+        if (error.code === '23505') {
+            logger.warn(`Registration failed for username ${username}: username already exists.`);
+            throw new AlreadyExistsError("Username already taken.");
+        }
+        logger.error(`Error creating user ${username}: ${error}`);
+        throw new UnexpectedError("An unexpected error occurred during registration.");
+    }
 }
 
-async function login(username: string, passwordRaw: string): Promise<User> {
+export async function login(username: string, passwordRaw: string): Promise<User> {
     const [user] = await crawlerPg<UserWithExtra[]>`
         SELECT id, username, password_hash, has_access AS "hasAccess", created_at AS "createdAt", updated_at AS "updatedAt"
         FROM users

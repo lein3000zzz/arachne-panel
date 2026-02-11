@@ -14,6 +14,8 @@ export const redis = createClient({
     password: pass,
 });
 
+await redis.connect().catch((err) => logger.error("Redis Connection Failed", err));
+
 redis.on('error', (err) => logger.error("Logger error: " + err));
 redis.on('connect', () => logger.info("Connected to Redis"));
 
