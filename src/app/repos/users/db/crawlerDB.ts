@@ -1,4 +1,4 @@
-import {logger} from "../../../lib";
+import {logger} from "@lib";
 import postgres from 'postgres'
 
 const pgUrl = process.env.CRAWLER_PG_URI || '';
