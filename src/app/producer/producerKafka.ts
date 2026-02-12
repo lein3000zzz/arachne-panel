@@ -1,4 +1,4 @@
-import {logger} from "../../lib";
+import {logger} from "@/lib/utils";
 import {Kafka, Partitioners, type Producer} from "kafkajs";
 import type { Run } from "../types";
 

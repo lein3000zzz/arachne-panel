@@ -1,7 +1,7 @@
-import { crawlerPg } from "../db";
-import { logger, ensureExists } from "@lib";
+import { crawlerPg } from "@/app/db";
+import { logger, ensureExists } from "@utils";
 import {type User, type UserWithExtra} from "@/app/types";
-import {AlreadyExistsError, UnexpectedError} from "@lib";
+import {AlreadyExistsError, UnexpectedError} from "@errors";
 
 interface CreateUserParams {
     username: string;

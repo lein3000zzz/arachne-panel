@@ -1,6 +1,7 @@
-import {logger} from "@lib";
-import {redis} from "../db";
+import {logger} from "@utils";
+import {redis} from "@/app/db";
 import {type User} from "@/app/types";
+import {NotFoundError} from "@errors";
 
 const SESSION_PREFIX = "session:";
 const SESSION_TTL = 60 * 60 * 24 * 7; // неделя в секундах
@@ -29,9 +30,9 @@ export async function createSession(user: User): Promise<string> {
     }
 }
 
-export async function getSessionUser(sessionId: string): Promise<User | null> {
+export async function getSessionUser(sessionId: string): Promise<User> {
     const sessData = await redis.get(`${SESSION_PREFIX}${sessionId}`);
-    if (!sessData) return null;
+    if (!sessData) throw new NotFoundError("Session does not exist");
 
     return JSON.parse(sessData) as User;
 }

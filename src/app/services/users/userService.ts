@@ -1,6 +1,6 @@
-import * as userRepo from "@/app/repos/users";
+import * as userRepo from "@/app/repos/users/pgQueries";
 import type {User} from "@/app/types";
-import {logger} from "@lib";
+import {logger} from "@utils";
 
 export async function registerUser(username: string, password: string): Promise<User> {
     const user = await userRepo.register({username, passwordRaw: password});

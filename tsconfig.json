@@ -10,7 +10,9 @@
     "paths": {
       "@/*": ["src/*"],
       "@lib": ["src/lib"],
-      "@repos/*": ["src/repos/*"]
+      "@repos/*": ["src/repos/*"],
+      "@utils": ["src/lib/utils"],
+      "@errors": ["src/lib/errors"],
     },
 
     // Bundler mode

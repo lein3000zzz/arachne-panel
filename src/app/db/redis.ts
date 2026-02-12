@@ -1,5 +1,5 @@
-import { createClient } from 'redis';
-import {logger} from "@lib";
+import { createClientPool } from 'redis';
+import {logger} from "@utils";
 
 const url = Bun.env.REDIS_URL || 'redis://localhost:6379';
 const pass = Bun.env.REDIS_PASSWORD || "";
@@ -9,7 +9,7 @@ if (!url) {
     process.exit(1);
 }
 
-export const redis = createClient({
+export const redis = createClientPool({
     url: url,
     password: pass,
 });

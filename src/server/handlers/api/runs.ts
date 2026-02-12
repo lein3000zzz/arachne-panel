@@ -1,5 +1,5 @@
 import { type Run } from "@/app/types";
-import { logger } from "@lib";
+import { logger } from "@/lib/utils";
 import { kp } from "@/app/producer";
 
 async function sendRun(req: Request): Promise<Response> {

@@ -5,6 +5,9 @@ export type ExtraTaskFlags = {
 
 export type Run = {
     id: string;
+} & RunCfg;
+
+export type RunCfg = {
     start_url: string;
     max_depth: number;
     max_links: number;
