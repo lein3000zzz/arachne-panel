@@ -13,7 +13,9 @@
     "typescript": "^5"
   },
   "dependencies": {
+    "@logtape/hono": "^2.0.2",
     "@logtape/logtape": "^2.0.2",
+    "hono": "^4.11.9",
     "kafkajs": "^2.2.4",
     "postgres": "^3.4.8",
     "redis": "^5.10.0"

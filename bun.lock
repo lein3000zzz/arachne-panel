@@ -5,7 +5,9 @@
     "": {
       "name": "arachne-panel",
       "dependencies": {
+        "@logtape/hono": "^2.0.2",
         "@logtape/logtape": "^2.0.2",
+        "hono": "^4.11.9",
         "kafkajs": "^2.2.4",
         "postgres": "^3.4.8",
         "redis": "^5.10.0",
@@ -19,6 +21,8 @@
     },
   },
   "packages": {
+    "@logtape/hono": ["@logtape/hono@2.0.2", "", { "peerDependencies": { "@logtape/logtape": "^2.0.2", "hono": "^4.0.0" } }, "sha512-dCIfdFnpEguVvd0cLeo7BOMXXBZ/e0dTcOiB9rn46tMsILZlmiIVWz+O0q1wOqSkooOau6zCkw+Rt58UT5nvPQ=="],
+
     "@logtape/logtape": ["@logtape/logtape@2.0.2", "", {}, "sha512-cveUBLbCMFkvkLycP/2vNWvywl47JcJbazHIju94/QNGboZ/jyYAgZIm0ZXezAOx3eIz8OG1EOZ5CuQP3+2FQg=="],
 
     "@redis/bloom": ["@redis/bloom@5.10.0", "", { "peerDependencies": { "@redis/client": "^5.10.0" } }, "sha512-doIF37ob+l47n0rkpRNgU8n4iacBlKM9xLiP1LtTZTvz8TloJB8qx/MgvhMhKdYG+CvCY2aPBnN2706izFn/4A=="],
@@ -38,6 +42,8 @@
     "bun-types": ["bun-types@1.3.8", "", { "dependencies": { "@types/node": "*" } }, "sha512-fL99nxdOWvV4LqjmC+8Q9kW3M4QTtTR1eePs94v5ctGqU8OeceWrSUaRw3JYb7tU3FkMIAjkueehrHPPPGKi5Q=="],
 
     "cluster-key-slot": ["cluster-key-slot@1.1.2", "", {}, "sha512-RMr0FhtfXemyinomL4hrWcYJxmX6deFdCxpJzhDttxgO1+bcCnkk+9drydLVDmAMG7NE6aN/fl4F7ucU/90gAA=="],
+
+    "hono": ["hono@4.11.9", "", {}, "sha512-Eaw2YTGM6WOxA6CXbckaEvslr2Ne4NFsKrvc0v97JD5awbmeBLO5w9Ho9L9kmKonrwF9RJlW6BxT1PVv/agBHQ=="],
 
     "kafkajs": ["kafkajs@2.2.4", "", {}, "sha512-j/YeapB1vfPT2iOIUn/vxdyKEuhuY2PxMBvf5JWux6iSaukAccrMtXEY/Lb7OvavDhOWME589bpLrEdnVHjfjA=="],
 
