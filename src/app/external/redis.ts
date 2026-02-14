@@ -1,7 +1,7 @@
 import { createClientPool } from 'redis';
 import {logger} from "@utils";
 
-const url = Bun.env.REDIS_URL || 'redis://localhost:6379';
+const url = Bun.env.REDIS_URL || 'redis://localhost:6370';
 const pass = Bun.env.REDIS_PASSWORD || "";
 
 if (!url) {

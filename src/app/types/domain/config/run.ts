@@ -3,9 +3,11 @@ export type ExtraTaskFlags = {
     parse_rendered_html: boolean;
 }
 
+export type RunStatus = "queued" | "failed" | "ready";
+
 export type Run = {
     id: string;
-    status: "queued" | "failed" | "ready";
+    status: RunStatus;
 } & RunCfg;
 
 export type RunCfg = {

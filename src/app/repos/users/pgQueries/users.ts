@@ -38,7 +38,7 @@ export async function register({ username, passwordRaw, hasAccess = false }: Cre
 
 export async function login(username: string, passwordRaw: string): Promise<User> {
     const [user] = await crawlerPg<UserWithExtra[]>`
-        SELECT id, username, password_hash, has_access AS "hasAccess", created_at AS "createdAt", updated_at AS "updatedAt"
+        SELECT id, username, password_hash AS "passwordHash", has_access AS "hasAccess", created_at AS "createdAt", updated_at AS "updatedAt"
         FROM users
         WHERE username = ${username}
     `;

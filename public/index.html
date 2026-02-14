@@ -16,9 +16,21 @@
                     <span class="theme-toggle-state" id="themeToggleState">Light</span>
                 </button>
             </div>
+            <div class="sidebar-status">
+                <div class="user-status">
+                    <span class="user-label">Session</span>
+                    <span id="userStatus">Signed out</span>
+                </div>
+                <div class="auth-actions">
+                    <button type="button" class="button-ghost" id="authOpenBtn" data-auth-open="login">Sign in</button>
+                    <button type="button" class="button-ghost is-hidden" id="logoutBtn">Log out</button>
+                </div>
+                <span class="health-pill" id="healthStatus">API: Checking...</span>
+            </div>
             <nav class="nav">
                 <span class="nav-title">Pages</span>
-                <a href="#" class="active" aria-current="page">Send Run</a>
+                <a href="#send" class="nav-link active" data-route="send" aria-current="page">Send Run</a>
+                <a href="#history" class="nav-link is-hidden" data-route="history" data-auth-required="true">Runs History</a>
             </nav>
         </aside>
         <main class="content">
@@ -28,50 +40,125 @@
                         Menu
                     </button>
                 </div>
-                <header class="page-header">
-                    <h1>Send Run to Kafka</h1>
-                    <p class="subtitle">Configure crawl limits and flags, then send the run to Kafka.</p>
-                </header>
-                <form id="runForm" class="card">
-                    <div class="form-row">
-                        <label for="start_url">Start URL:</label>
-                        <input type="url" id="start_url" required>
-                    </div>
+                <div class="status-banner" id="statusMessage" role="status" aria-live="polite"></div>
 
-                    <div class="form-row">
-                        <label for="max_depth">Max Depth:</label>
-                        <input type="number" id="max_depth" min="0" required>
-                    </div>
+                <section class="page" data-page="send">
+                    <header class="page-header">
+                        <h1>Send Run to Kafka</h1>
+                        <p class="subtitle">Configure crawl limits and flags, then send the run to Kafka.</p>
+                    </header>
+                    <form id="runForm" class="card">
+                        <div class="form-row">
+                            <label for="start_url">Start URL:</label>
+                            <input type="url" id="start_url" required>
+                        </div>
 
-                    <div class="form-row">
-                        <label for="max_links">Max Links:</label>
-                        <input type="number" id="max_links" min="0" required>
-                    </div>
+                        <div class="form-row">
+                            <label for="max_depth">Max Depth:</label>
+                            <input type="number" id="max_depth" min="0" required>
+                        </div>
 
-                    <div class="form-row">
-                        <div class="checkbox-row">
-                            <input type="checkbox" id="use_cache_flag">
-                            <label for="use_cache_flag">Use Cache</label>
+                        <div class="form-row">
+                            <label for="max_links">Max Links:</label>
+                            <input type="number" id="max_links" min="0" required>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="checkbox-row">
+                                <input type="checkbox" id="use_cache_flag">
+                                <label for="use_cache_flag">Use Cache</label>
+                            </div>
+                        </div>
+
+                        <fieldset class="form-row">
+                            <legend>Extra Flags:</legend>
+                            <div class="checkbox-row">
+                                <input type="checkbox" id="should_screenshot">
+                                <label for="should_screenshot">Should Screenshot</label>
+                            </div>
+                            <div class="checkbox-row">
+                                <input type="checkbox" id="parse_rendered_html">
+                                <label for="parse_rendered_html">Parse Rendered HTML</label>
+                            </div>
+                        </fieldset>
+
+                        <button type="submit">Send Run</button>
+                    </form>
+                </section>
+
+                <section class="page is-hidden" data-page="history">
+                    <header class="page-header">
+                        <h1>Runs History</h1>
+                        <p class="subtitle">Review your most recent crawl requests.</p>
+                    </header>
+                    <div class="card history-card">
+                        <div class="history-controls">
+                            <button type="button" id="refreshHistoryBtn">Refresh</button>
+                            <button type="button" class="button-ghost" id="loadMoreHistoryBtn">Load More</button>
+                            <span class="history-meta" id="historyMeta"></span>
+                        </div>
+                        <div class="history-locked is-hidden" id="historyLocked">
+                            <p>Sign in to access your run history.</p>
+                            <button type="button" class="button-ghost" id="historySignInBtn">Sign in</button>
+                        </div>
+                        <div class="history-empty is-hidden" id="historyEmpty">No runs yet.</div>
+                        <div class="history-table-wrap" id="historyTableWrap">
+                            <table class="history-table">
+                                <thead>
+                                    <tr>
+                                        <th>Run ID</th>
+                                        <th>Status</th>
+                                        <th>Start URL</th>
+                                        <th>Max Depth</th>
+                                        <th>Max Links</th>
+                                        <th>Cache</th>
+                                        <th>Flags</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="historyTableBody"></tbody>
+                            </table>
                         </div>
                     </div>
-
-                    <fieldset class="form-row">
-                        <legend>Extra Flags:</legend>
-                        <div class="checkbox-row">
-                            <input type="checkbox" id="should_screenshot">
-                            <label for="should_screenshot">Should Screenshot</label>
-                        </div>
-                        <div class="checkbox-row">
-                            <input type="checkbox" id="parse_rendered_html">
-                            <label for="parse_rendered_html">Parse Rendered HTML</label>
-                        </div>
-                    </fieldset>
-
-                    <button type="submit">Send Run</button>
-                </form>
+                </section>
             </div>
         </main>
     </div>
+
+    <div class="modal is-hidden" id="authModal" role="dialog" aria-modal="true" aria-labelledby="authModalTitle">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="authModalTitle">Sign in</h2>
+                <button type="button" class="button-ghost" id="authCloseBtn" aria-label="Close">Close</button>
+            </div>
+            <div class="modal-tabs">
+                <button type="button" class="tab-btn active" data-mode="login">Sign in</button>
+                <button type="button" class="tab-btn" data-mode="register">Create account</button>
+            </div>
+            <form class="modal-form" id="loginForm">
+                <div class="form-row">
+                    <label for="loginUsername">Username</label>
+                    <input type="text" id="loginUsername" autocomplete="username" required>
+                </div>
+                <div class="form-row">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" autocomplete="current-password" required>
+                </div>
+                <button type="submit">Sign in</button>
+            </form>
+            <form class="modal-form is-hidden" id="registerForm">
+                <div class="form-row">
+                    <label for="registerUsername">Username</label>
+                    <input type="text" id="registerUsername" autocomplete="username" required>
+                </div>
+                <div class="form-row">
+                    <label for="registerPassword">Password</label>
+                    <input type="password" id="registerPassword" autocomplete="new-password" required>
+                </div>
+                <button type="submit">Create account</button>
+            </form>
+        </div>
+    </div>
+
     <script src="assets/script.js"></script>
 </body>
 </html>

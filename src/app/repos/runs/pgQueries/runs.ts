@@ -1,6 +1,6 @@
 import {crawlerPg} from "@/app/external";
 import {logger} from "@utils";
-import {type Run, type RunCfg, type User} from "@/app/types";
+import {type Run, type RunCfg, type RunStatus, type User} from "@/app/types";
 
 export async function saveRun(runCfg: RunCfg, user: User): Promise<Run> {
     const runId = Bun.randomUUIDv7();
@@ -13,6 +13,7 @@ export async function saveRun(runCfg: RunCfg, user: User): Promise<Run> {
 
         return {
             id: runId,
+            status: "queued",
             ...runCfg,
         }
     } catch (error) {
@@ -38,7 +39,7 @@ export async function markFailed(runId: string): Promise<void> {
 export async function getRunsByUser(userId: string, offset: number, limit: number): Promise<Run[]> {
     try {
         const runs = await crawlerPg`
-            SELECT id, config
+            SELECT id, status, config
             FROM runs
             WHERE user_id = ${userId}
             ORDER BY created_at DESC
@@ -46,10 +47,14 @@ export async function getRunsByUser(userId: string, offset: number, limit: numbe
             LIMIT ${limit}
         `;
 
-        return runs.map(run => ({
-            id: run.id,
-            ...run.config,
-        }));
+        return runs.map((run) => {
+            const cfg = typeof run.config === "string" ? JSON.parse(run.config) : run.config;
+            return {
+                id: run.id,
+                status: run.status as RunStatus,
+                ...cfg,
+            };
+        });
     } catch (error) {
         logger.error(`Error fetching runs for user ${userId}: ${error}`);
         throw new Error(`Failed to fetch runs for user ${userId}: ${error}`);

@@ -8,5 +8,6 @@ RUN bun install
 COPY src ./src
 copy public ./public
 COPY .env ./
+COPY tsconfig.json ./
 
 CMD ["bun", "run", "start"]

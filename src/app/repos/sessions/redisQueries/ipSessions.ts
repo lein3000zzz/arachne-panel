@@ -3,7 +3,7 @@ import {logger} from "@utils";
 
 const RATELIM_PREFIX = "ratelimit:";
 
-export async function rateLimit(ip: string, limit = 5, windowInSeconds = 60): Promise<boolean> {
+export async function rateLimit(ip: string, limit = 5, windowInSeconds = 10): Promise<boolean> {
     const key = `${RATELIM_PREFIX}${ip}`;
 
     const results = await redis

@@ -1,4 +1,5 @@
-import mainPage from "../../public/index.html"
+import { serveStatic } from "hono/bun";
+import mainPage from "../../public/index.html";
 import * as handlers from "./handlers";
 import {Hono} from "hono"
 import { honoLogger } from "@logtape/hono"
@@ -6,11 +7,13 @@ import {NotFoundError, RateLimitExceededError, UnauthorizedError} from "@errors"
 import {authMiddleware, rateLimiterMiddleware} from "@/server/mdlwr";
 
 const app = new Hono();
+const mainPageFile = Bun.file(mainPage.index);
 
-app.use("*", honoLogger())
-app.use("/api/*", rateLimiterMiddleware)
+app.use("*", honoLogger());
+app.use("/api/*", rateLimiterMiddleware);
+app.use("/assets/*", serveStatic({ root: "./public" }));
 
-app.get("/", (c) => c.html(mainPage as unknown as string, 200));
+app.get("/", async (c) => c.html(await mainPageFile.text(), 200));
 app.get("/api/health", (c) => c.text("OK", 200));
 
 app.post("/api/users/register", (c) => handlers.registerUser(c));
@@ -43,7 +46,7 @@ app.onError((err, c) => {
     return c.json({ error: 'Internal Server Error' }, 500);
 });
 
-Bun.serve({
+export const server = Bun.serve({
     fetch: app.fetch,
     port: 3003,
 })

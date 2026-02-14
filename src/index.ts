@@ -1,5 +1,5 @@
-import {server} from "./server";
-import {logger} from "./lib";
+import { server } from "./server";
+import { logger } from "@utils";
 
 logger.info(`Started logger and server at port ${server.port}`);
 
