@@ -1,9 +1,9 @@
 import mainPage from "../../public/index.html"
-import {sendRun} from "./handlers";
+import * as handlers from "./handlers";
 import {Hono} from "hono"
 import { honoLogger } from "@logtape/hono"
-import {NotFoundError, RateLimitExceededError} from "@errors";
-import {rateLimiterMiddleware} from "@/server/mdlwr/ratelim";
+import {NotFoundError, RateLimitExceededError, UnauthorizedError} from "@errors";
+import {authMiddleware, rateLimiterMiddleware} from "@/server/mdlwr";
 
 const app = new Hono();
 
@@ -13,9 +13,15 @@ app.use("/api/*", rateLimiterMiddleware)
 app.get("/", (c) => c.html(mainPage as unknown as string, 200));
 app.get("/api/health", (c) => c.text("OK", 200));
 
-app.post("/api/runs/send", async (c): Promise<Response> => {
-    return await sendRun(c.req.raw);
-});
+app.post("/api/users/register", (c) => handlers.registerUser(c));
+app.post("/api/users/login", (c) => handlers.loginUser(c));
+
+app.get("/api/sessions/me", authMiddleware, (c) => handlers.getCurrentUser(c));
+app.post("/api/sessions/logout", authMiddleware, (c) => handlers.logoutUser(c));
+
+app.post("/api/runs/send", authMiddleware, (c)=> handlers.sendRun(c));
+app.get("/api/runs/history", authMiddleware, (c) => handlers.getRunsHistory(c));
+
 app.all("/api/*", (_c) => {
     throw new NotFoundError("Not Found");
 });
@@ -23,6 +29,10 @@ app.all("/api/*", (_c) => {
 app.onError((err, c) => {
     if (err instanceof RateLimitExceededError) {
         return c.json({ error: err.message }, 429);
+    }
+
+    if (err instanceof UnauthorizedError) {
+        return c.json({ error: err.message }, 401);
     }
 
     if (err instanceof NotFoundError) {
@@ -33,4 +43,7 @@ app.onError((err, c) => {
     return c.json({ error: 'Internal Server Error' }, 500);
 });
 
-export { app };
+Bun.serve({
+    fetch: app.fetch,
+    port: 3003,
+})

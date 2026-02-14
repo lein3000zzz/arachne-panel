@@ -5,6 +5,7 @@ export type ExtraTaskFlags = {
 
 export type Run = {
     id: string;
+    status: "queued" | "failed" | "ready";
 } & RunCfg;
 
 export type RunCfg = {

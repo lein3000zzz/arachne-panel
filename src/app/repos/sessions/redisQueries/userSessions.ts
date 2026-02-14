@@ -1,5 +1,5 @@
 import {logger} from "@utils";
-import {redis} from "@/app/db";
+import {redis} from "@/app/external";
 import {type User} from "@/app/types";
 import {NotFoundError} from "@errors";
 

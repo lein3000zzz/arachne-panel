@@ -1,4 +1,4 @@
-import { crawlerPg } from "@/app/db";
+import { crawlerPg } from "@/app/external";
 import { logger, ensureExists } from "@utils";
 import {type User, type UserWithExtra} from "@/app/types";
 import {AlreadyExistsError, UnexpectedError} from "@errors";

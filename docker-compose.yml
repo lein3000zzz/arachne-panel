@@ -36,7 +36,7 @@ services:
       - ./deployments/postgres/pg.env
     volumes:
       - ./deployments/postgres/migration.sql:/migration.sql:ro
-    entrypoint: [ "sh","-c","PGPASSWORD=$$POSTGRES_PASSWORD psql -h db -U $$POSTGRES_USER -d $$POSTGRES_DB -f /migration.sql" ]
+    entrypoint: [ "sh","-c","PGPASSWORD=$$POSTGRES_PASSWORD psql -h external -U $$POSTGRES_USER -d $$POSTGRES_DB -f /migration.sql" ]
     restart: "no"
 
   redis:

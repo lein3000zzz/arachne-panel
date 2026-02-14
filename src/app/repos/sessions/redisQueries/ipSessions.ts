@@ -1,4 +1,4 @@
-import {redis} from "@/app/db"
+import {redis} from "@/app/external"
 import {logger} from "@utils";
 
 const RATELIM_PREFIX = "ratelimit:";

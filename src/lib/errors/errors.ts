@@ -25,3 +25,10 @@ export class RateLimitExceededError extends Error {
         this.name = "RateLimitExceededError";
     }
 }
+
+export class UnauthorizedError extends Error {
+    constructor(message: string) {
+        super(message);
+        this.name = "UnauthorizedError";
+    }
+}
