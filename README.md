@@ -1,6 +1,11 @@
 # arachne-panel
 
-Check out the [main repo](https://github.com/lein3000zzz/project-arachne)
+> **Deprecated** - This repository is no longer maintained.  
+> It was a minimal single-page crawl starter written exclusively for **project-arachne v0**.  
+> It is not compatible with later versions of the crawler and will not receive further updates.
+
+For the current project, see:  
+**[project-arachne](https://github.com/lein3000zzz/project-arachne)**
 
 To install dependencies:
 
